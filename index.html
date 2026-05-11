@@ -714,27 +714,29 @@ function spawnAbove() {
       vx: (Math.random() < 0.5 ? 1 : -1) * (1.2 + zIdx * 0.4)
     });
 
-// 장애물 (UFO 구간 zIdx>=6부터는 개수/속도 완화)
-const isHighZone = zIdx >= 6;  // 외기권(6), 우주(7) = UFO 구간
-const spawnRate = isHighZone
-  ? 0.05                       // UFO 구간: 5% 고정 (이전 0.31~0.35에서 대폭 감소)
-  : 0.04 + zIdx * 0.025;       // 일반 구간: 살짝 완화 (4%~14%)
-
-if (Math.random() < spawnRate) {
-  const type = obstacleForZone(zIdx);
-  // 속도 조정
-  const baseSpeed = isHighZone
-    ? 1.8                       // UFO 구간: 느린 속도 고정
-    : 1.2 + zIdx * 0.4;         // 일반: 살짝 완화
-  obstacles.push({
-    x: Math.random() * W,
-    y: highestY - 80 - Math.random() * 100,  // 더 멀리 떨어뜨려 회피 공간 확보
-    vx: (Math.random() < 0.5 ? 1 : -1) * baseSpeed,
-    width: 50, height: 38,
-    type: type,
-    anim: Math.random() * Math.PI * 2
-  });
-}
+// 장애물 (열권 이후 전체 완화 + 후반부로 갈수록 점진적 상승)
+    let spawnRate, baseSpeed;
+    if (zIdx === 4) {
+      // 중간권 - 유성 (성층권보다 살짝 쉬움)
+      spawnRate = 0.08;
+      baseSpeed = 2.3;
+    } else if (zIdx === 5) {
+      // 열권 - 인공위성 (확 완화 = 휴식 구간)
+      spawnRate = 0.05;
+      baseSpeed = 1.7;
+    } else if (zIdx === 6) {
+      // 외기권 - UFO (살짝 어려워짐)
+      spawnRate = 0.07;
+      baseSpeed = 2.0;
+    } else if (zIdx === 7) {
+      // 우주 - UFO 빈도/속도 증가 (최종 보스급)
+      spawnRate = 0.09;
+      baseSpeed = 2.4;
+    } else {
+      // 일반 구간 (지하~성층권)
+      spawnRate = 0.04 + zIdx * 0.025;
+      baseSpeed = 1.2 + zIdx * 0.4;
+    }
 
     // 아이템
     if (Math.random() < 0.13) {
