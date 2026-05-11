@@ -496,14 +496,14 @@
 
 // ---------- 설정 (CONFIG) ----------
 const CONFIG = {
-  USE_GLB: false,                  // GLB 캐릭터 사용 여부
-  GLB_PATH: './character.glb',     // GLB 파일 경로
-  GRAVITY: 0.6,                    // ↑↑ 더 빠른 낙하
-  JUMP_POWER: 21,                  // ↑↑ 강력한 점프
-  SUPER_JUMP_POWER: 38,            // ↑↑ 폭발적인 슈퍼점프
-  MOVE_ACCEL: 1.9,                 // ↑↑ 즉각적인 반응
-  MAX_SPEED: 12,                   // ↑↑ 빠른 좌우 이동
-  FRICTION: 0.8                    // ↓ 빨리 멈춤
+  USE_GLB: false,
+  GLB_PATH: './character.glb',
+  GRAVITY: 0.55,           // 중력 (높이면 빨리 떨어짐)
+  JUMP_POWER: 16,          // 점프력 (높이면 더 높이)
+  SUPER_JUMP_POWER: 28,
+  MOVE_ACCEL: 1.1,         // 좌우 가속도 (높이면 빠른 반응)
+  MAX_SPEED: 7.5,          // 좌우 최대 속도 (높이면 빠른 이동)
+  FRICTION: 0.83           // 마찰 (낮을수록 빨리 멈춤)
 };
 
 // ---------- 지역 정의 (지하 → 땅 → 대류권 → 성층권 → 중간권 → 열권 → 외기권 → 우주) ----------
@@ -2167,8 +2167,8 @@ function createKuriGlow() {
   const grd = gctx.createRadialGradient(128, 128, 0, 128, 128, 128);
   // ⭐ 중심을 투명하게 만들어 캐릭터가 후광에 가려지지 않도록
   grd.addColorStop(0,    'rgba(255, 244, 194, 0)');     // 중심: 완전 투명
-  grd.addColorStop(0.25, 'rgba(255, 244, 194, 0.1)');   // 캐릭터 영역: 거의 투명
-  grd.addColorStop(0.45, 'rgba(255, 240, 180, 0.55)');  // 캐릭터 가장자리: 가장 밝음
+  grd.addColorStop(0.25, 'rgba(255, 244, 194, 0.0)');   // 캐릭터 영역: 거의 투명
+  grd.addColorStop(0.45, 'rgba(255, 240, 180, 0.5)');  // 캐릭터 가장자리: 가장 밝음
   grd.addColorStop(0.7,  'rgba(255, 235, 150, 0.25)');
   grd.addColorStop(1,    'rgba(255, 235, 150, 0)');     // 바깥: 투명
   gctx.fillStyle = grd;
@@ -2183,7 +2183,7 @@ function createKuriGlow() {
     opacity: 1
   });
   const sprite = new THREE.Sprite(material);
-  sprite.scale.setScalar(140);  // 캐릭터(140)를 감싸는 더 큰 후광
+  sprite.scale.setScalar(100);  // 캐릭터(140)를 감싸는 더 큰 후광
   scene.add(sprite);
   return sprite;
 }
