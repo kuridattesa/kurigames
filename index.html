@@ -714,18 +714,27 @@ function spawnAbove() {
       vx: (Math.random() < 0.5 ? 1 : -1) * (1.2 + zIdx * 0.4)
     });
 
-    // 장애물 (확률 ↑ with zone)
-    if (Math.random() < 0.07 + zIdx * 0.04) {
-      const type = obstacleForZone(zIdx);
-      obstacles.push({
-        x: Math.random() * W,
-        y: highestY - 60 - Math.random() * 80,
-        vx: (Math.random() < 0.5 ? 1 : -1) * (1.5 + zIdx * 0.6),
-        width: 50, height: 38,
-        type: type,
-        anim: Math.random() * Math.PI * 2
-      });
-    }
+// 장애물 (UFO 구간 zIdx>=6부터는 개수/속도 완화)
+const isHighZone = zIdx >= 6;  // 외기권(6), 우주(7) = UFO 구간
+const spawnRate = isHighZone
+  ? 0.05                       // UFO 구간: 5% 고정 (이전 0.31~0.35에서 대폭 감소)
+  : 0.04 + zIdx * 0.025;       // 일반 구간: 살짝 완화 (4%~14%)
+
+if (Math.random() < spawnRate) {
+  const type = obstacleForZone(zIdx);
+  // 속도 조정
+  const baseSpeed = isHighZone
+    ? 1.8                       // UFO 구간: 느린 속도 고정
+    : 1.2 + zIdx * 0.4;         // 일반: 살짝 완화
+  obstacles.push({
+    x: Math.random() * W,
+    y: highestY - 80 - Math.random() * 100,  // 더 멀리 떨어뜨려 회피 공간 확보
+    vx: (Math.random() < 0.5 ? 1 : -1) * baseSpeed,
+    width: 50, height: 38,
+    type: type,
+    anim: Math.random() * Math.PI * 2
+  });
+}
 
     // 아이템
     if (Math.random() < 0.13) {
@@ -907,6 +916,26 @@ function update() {
     const dx = Math.abs(ob.x - player.x);
     const dy = Math.abs(ob.y - player.y);
     if (dx < (ob.width + player.width) / 2 - 8 && dy < (ob.height + player.height) / 2 - 8) {
+      // ⭐ 슈퍼점프 중에는 무적! 장애물을 부수고 점수 획득
+      if (superJumpTimer > 0) {
+        // 충돌한 장애물 제거 + 점수 보너스
+        ob.x = -9999;  // 화면 밖으로 보내서 즉시 제거 트리거
+        score += 30;
+        playCoinSound();
+        vibrate(40);
+        // 폭발 파티클
+        for (let k = 0; k < 12; k++) {
+          const angle = (k / 12) * Math.PI * 2;
+          particles.push({
+            x: ob.x, y: ob.y,
+            vx: Math.cos(angle) * 6,
+            vy: Math.sin(angle) * 6,
+            life: 30, maxLife: 30,
+            color: '#FFD54F', size: 5
+          });
+        }
+        continue;  // 다음 장애물로 (게임오버 없음)
+      }
       gameOver();
       return;
     }
@@ -2222,10 +2251,10 @@ loader.load(
           child.material.opacity = 1;
           child.material.depthWrite = true;
           child.material.alphaTest = 0;
-          // 발광 효과 (캐릭터 본래 색을 너무 가리지 않게 약하게)
+         // 발광 효과 제거 - 캐릭터 본래 색 유지
           if (child.material.emissive !== undefined) {
-            child.material.emissive = new THREE.Color(0xfff4d0);  // 옅은 크림색
-            child.material.emissiveIntensity = 0.15;  // 약하게 - 본래 색 살림
+            child.material.emissive = new THREE.Color(0x000000);  // 검정 = 발광 없음
+            child.material.emissiveIntensity = 0;
           }
           // 톤매핑 끄기
           child.material.toneMapped = false;
