@@ -442,8 +442,8 @@
 
 <div class="overlay" id="startScreen">
   <div class="bounce-emoji">🚀</div>
-  <h1 class="title">쿠리의<br>우주여행</h1>
-  <div class="subtitle">🌟 별을 모아 더 높이! 쿠리와 우주로 떠나요</div>
+  <h1 class="title">의<br>우주여행</h1>
+  <div class="subtitle">🌟 별을 모아 더 높이! 와 우주로 떠나요</div>
   <button class="btn" id="startBtn">START</button>
   <div class="controls-card">
     <div class="ctrl-row"><span class="ctrl-icon">👆</span> 화면 왼쪽/오른쪽 터치로 이동</div>
@@ -491,7 +491,7 @@
 
 <script>
 // ============================================================
-// 🎮 쿠리의 우주여행 - 게임 코드
+// 🎮 의 우주여행 - 게임 코드
 // ============================================================
 
 // ---------- 설정 (CONFIG) ----------
@@ -1880,10 +1880,10 @@ let reviveAvailable = false;  // 게임 시작 시 true, 부활 사용 시 false
 function buildShareMessage() {
   const h = Math.floor(maxHeight / 10);
   const z = ZONES[getZoneIdx(maxHeight)].name;
-  return `🚀 쿠리의 우주여행 ${score}점!\n` +
-         `🐾 쿠리랑 ${z}까지 날아갔어요 (${h}m)\n` +
+  return `🚀 의 우주여행 ${score}점!\n` +
+         `🐾 랑 ${z}까지 날아갔어요 (${h}m)\n` +
          `같이 우주로 떠나볼래요? ✨\n` +
-         `#쿠리의우주여행 #쿠리`;
+         `#쿠리의우주여행`;
 }
 
 // Web Share API 지원 여부 확인
