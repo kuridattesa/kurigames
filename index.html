@@ -2168,8 +2168,8 @@ function createKuriGlow() {
   // ⭐ 중심을 투명하게 만들어 캐릭터가 후광에 가려지지 않도록
   grd.addColorStop(0,    'rgba(255, 244, 194, 0)');     // 중심: 완전 투명
   grd.addColorStop(0.25, 'rgba(255, 244, 194, 0.0)');   // 캐릭터 영역: 거의 투명
-  grd.addColorStop(0.45, 'rgba(255, 240, 180, 0.5)');  // 캐릭터 가장자리: 가장 밝음
-  grd.addColorStop(0.7,  'rgba(255, 235, 150, 0.25)');
+  grd.addColorStop(0.45, 'rgba(255, 240, 180, 0.3)');  // 캐릭터 가장자리: 가장 밝음
+  grd.addColorStop(0.7,  'rgba(255, 235, 150, 0.15)');
   grd.addColorStop(1,    'rgba(255, 235, 150, 0)');     // 바깥: 투명
   gctx.fillStyle = grd;
   gctx.fillRect(0, 0, 256, 256);
@@ -2180,7 +2180,7 @@ function createKuriGlow() {
     transparent: true,
     blending: THREE.AdditiveBlending,
     depthWrite: false,
-    opacity: 1
+    opacity: 0.8
   });
   const sprite = new THREE.Sprite(material);
   sprite.scale.setScalar(100);  // 캐릭터(140)를 감싸는 더 큰 후광
