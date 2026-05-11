@@ -509,14 +509,17 @@ const CONFIG = {
 // ---------- 지역 정의 (지하 → 땅 → 대류권 → 성층권 → 중간권 → 열권 → 외기권 → 우주) ----------
 // 각 지역 간격을 넓혀서 한 곳에 머무는 시간이 길어지도록 설계
 const ZONES = [
-  { name: '지하',    minHeight: 0,    skyTop: '#2a1208', skyBot: '#5d2f15' },
-  { name: '땅',      minHeight: 600,  skyTop: '#7EC4E6', skyBot: '#B8E2B6' },
-  { name: '대류권',  minHeight: 1500, skyTop: '#5BA8E0', skyBot: '#C5E0F0' },
-  { name: '성층권',  minHeight: 2800, skyTop: '#2D5F9C', skyBot: '#6B92C5' },
-  { name: '중간권',  minHeight: 4100, skyTop: '#0E2553', skyBot: '#3A4D7A' },
-  { name: '열권',    minHeight: 5500, skyTop: '#0A1240', skyBot: '#3D1B5C' },
-  { name: '외기권',  minHeight: 7000, skyTop: '#020514', skyBot: '#0D0828' },
-  { name: '우주',    minHeight: 8500, skyTop: '#000008', skyBot: '#0F0020' }
+  // 앞부분은 그대로 (빠르게 진행)
+  { name: '지하',    minHeight: 0,     skyTop: '#2a1208', skyBot: '#5d2f15' },
+  { name: '땅',      minHeight: 600,   skyTop: '#7EC4E6', skyBot: '#B8E2B6' },
+  { name: '대류권',  minHeight: 1500,  skyTop: '#5BA8E0', skyBot: '#C5E0F0' },
+  // 중반부 4개 구간을 약 2000m씩 늘어진 긴 여정으로
+  { name: '성층권',  minHeight: 2800,  skyTop: '#2D5F9C', skyBot: '#6B92C5' },  // 2000m
+  { name: '중간권',  minHeight: 4800,  skyTop: '#0E2553', skyBot: '#3A4D7A' },  // 2000m
+  { name: '열권',    minHeight: 6800,  skyTop: '#0A1240', skyBot: '#3D1B5C' },  // 2200m
+  { name: '외기권',  minHeight: 9000,  skyTop: '#020514', skyBot: '#0D0828' },  // 2500m
+  // 마지막 도착지 (여기까지 오면 진짜 우주 정복!)
+  { name: '우주',    minHeight: 11500, skyTop: '#000008', skyBot: '#0F0020' }
 ];
 
 // ---------- 캔버스 ----------
