@@ -2156,38 +2156,6 @@ const starInstances = [];    // 별 mesh 풀
 const PLAYER_3D_HEIGHT = 75;  // 캐릭터 화면 크기 (px) - 후광에 묻히지 않게 크게
 const STAR_3D_HEIGHT = 30;     // 별 아이템 화면 크기 (px)
 
-// ✨ 캐릭터 발광 효과 - 글로우 헤일로 스프라이트 생성
-// (어두운 배경에서도 캐릭터가 잘 보이도록 파스텔 노란빛 후광)
-let kuriGlow = null;
-function createKuriGlow() {
-  // 캔버스로 라디얼 그라디언트 텍스처 생성 (도넛 형태 - 중심은 투명)
-  const canvas = document.createElement('canvas');
-  canvas.width = canvas.height = 120;
-  const gctx = canvas.getContext('2d');
-  const grd = gctx.createRadialGradient(128, 128, 0, 128, 128, 128);
-  // ⭐ 중심을 투명하게 만들어 캐릭터가 후광에 가려지지 않도록
-  grd.addColorStop(0,    'rgba(255, 244, 194, 0)');     // 중심: 완전 투명
-  grd.addColorStop(0.25, 'rgba(255, 244, 194, 0.1)');   // 캐릭터 영역: 거의 투명
-  grd.addColorStop(0.45, 'rgba(255, 240, 180, 0.55)');  // 캐릭터 가장자리: 가장 밝음
-  grd.addColorStop(0.7,  'rgba(255, 235, 150, 0.25)');
-  grd.addColorStop(1,    'rgba(255, 235, 150, 0)');     // 바깥: 투명
-  gctx.fillStyle = grd;
-  gctx.fillRect(0, 0, 256, 256);
-
-  const texture = new THREE.CanvasTexture(canvas);
-  const material = new THREE.SpriteMaterial({
-    map: texture,
-    transparent: true,
-    blending: THREE.AdditiveBlending,
-    depthWrite: false,
-    opacity: 1
-  });
-  const sprite = new THREE.Sprite(material);
-  sprite.scale.setScalar(260);  // 캐릭터(140)를 감싸는 더 큰 후광
-  scene.add(sprite);
-  return sprite;
-}
-
 // 캐릭터 로딩
 loader.load(
   './kuri.glb',
